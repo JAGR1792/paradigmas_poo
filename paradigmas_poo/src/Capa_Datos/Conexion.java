@@ -26,7 +26,7 @@ public class Conexion {
             Connection cn = DriverManager.getConnection(url, usuario, pwd);
             PreparedStatement da = cn.prepareStatement(Cad);
             int r = da.executeUpdate();
-            if (r > 1){
+            if (r > 0){
                 return "Se afecto " + r + " fila";
             }
             else {
