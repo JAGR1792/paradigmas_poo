@@ -6,26 +6,30 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Formulario_Articulo extends javax.swing.JFrame {
-
+// Constructor del formulario
     public Formulario_Articulo() {
-        initComponents();
+        initComponents(); // Inicializa los componentes Swing generalmente es Autogenerado
         this.setSize(850, 430);
-        ListarArticulos();
-        jBGrabar.setEnabled(false);
+        ListarArticulos(); // Metodo para inicializar o actualizar la Tabla, en este caso son los datos iniciales
+        jBGrabar.setEnabled(false); 
     }
 
+     // Método para cargar y mostrar los artículos en la tabla
     public void ListarArticulos() {
         DefaultTableModel tabla = new DefaultTableModel();
         DataArticulo objart = new DataArticulo();
         ArrayList<DataArticulo> lista2 = new ArrayList();
-        lista2 = objart.ListaArticulos();
+        lista2 = objart.ListaArticulos();  // Obtiene lista de artículos desde capa negocio
+        // Configuración de columnas de la tablita
         tabla.addColumn("Codigo");
         tabla.addColumn("Nombre");
         tabla.addColumn("Unidad");
         tabla.addColumn("Precio");
         tabla.addColumn("Stock");
         tabla.addColumn("Marca");
-        tabla.setRowCount(lista2.size());
+        tabla.setRowCount(lista2.size()); // Cuantas filas tenemos en la tablita
+        
+        // for - each para llenar los datos en la taba
         int i = 0;
         for (DataArticulo x : lista2) {
             tabla.setValueAt(x.getArt_cod(), i, 0);
@@ -36,10 +40,10 @@ public class Formulario_Articulo extends javax.swing.JFrame {
             tabla.setValueAt(x.getArt_marca(), i, 5);
             i++;
         }
-        this.jTable1.setModel(tabla);
+        this.jTable1.setModel(tabla); // Asigna modelo de datos a la tabla
     }
 
-    public void LimpiarCajasTexto(){
+    public void LimpiarCajasTexto(){ //  // Limpia los campos de texto del formulario
         this.TFCodigo.setText("");
         this.TFNombre.setText("");
         this.TFMedida.setText("");
@@ -49,7 +53,7 @@ public class Formulario_Articulo extends javax.swing.JFrame {
     }
 
     @SuppressWarnings("unchecked")
-    private void initComponents() {
+    private void initComponents() { // Lo hace solito el IDE
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -208,14 +212,31 @@ public class Formulario_Articulo extends javax.swing.JFrame {
         pack();
     }
 
-    private void jBNuevoActionPerformed(java.awt.event.ActionEvent evt) {
-        LimpiarCajasTexto();
-        if ( this.jTable1.getRowCount() + 1 >= 10) this.TFCodigo.setText("A00" + (this.jTable1.getRowCount() + 1));
-        else if ( this.jTable1.getRowCount() >= 100) this.TFCodigo.setText("A0" + (this.jTable1.getRowCount() + 1));
-        else if ( this.jTable1.getRowCount() >= 1000) this.TFCodigo.setText("A" + (this.jTable1.getRowCount() + 1));
-        else this.TFCodigo.setText("A000" + (this.jTable1.getRowCount() + 1));
-        jBGrabar.setEnabled(true);
-    }
+   private void jBNuevoActionPerformed(java.awt.event.ActionEvent evt) {
+    // Limpia todos los campos de texto para que el usuario pueda ingresar un nuevo artículo
+    LimpiarCajasTexto();
+
+    // Genera automáticamente un nuevo código de artículo basado en la cantidad de filas en la tabla
+    // Si hay menos de 10 artículos, el código será "A000X"
+    if (this.jTable1.getRowCount() + 1 >= 10) 
+        this.TFCodigo.setText("A00" + (this.jTable1.getRowCount() + 1));
+    
+    // Si hay entre 10 y 99 artículos, el código será "A00X"
+    else if (this.jTable1.getRowCount() >= 100) 
+        this.TFCodigo.setText("A0" + (this.jTable1.getRowCount() + 1));
+    
+    // Si hay entre 100 y 999 artículos, el código será "A0X"
+    else if (this.jTable1.getRowCount() >= 1000) 
+        this.TFCodigo.setText("A" + (this.jTable1.getRowCount() + 1));
+    
+    // Si hay más de 1000 artículos, el código será "AX"
+    else 
+        this.TFCodigo.setText("A000" + (this.jTable1.getRowCount() + 1));
+
+    // Habilita el botón "Grabar" para permitir al usuario guardar el nuevo artículo
+    jBGrabar.setEnabled(true);
+}
+
 
     private void jBGrabarActionPerformed(java.awt.event.ActionEvent evt) {
         DataArticulo objart = new DataArticulo();
